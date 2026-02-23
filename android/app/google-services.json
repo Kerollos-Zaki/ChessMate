@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "858546554429",
+    "project_id": "chessmate-4e542",
+    "storage_bucket": "chessmate-4e542.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858546554429:android:bec26f7951e803acaa0c54",
+        "android_client_info": {
+          "package_name": "com.example.chessmate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYgwkIRiswD4u2uYUGFmTgnVKviEsUi3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
