@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class DifficultyScreen extends StatelessWidget {
   const DifficultyScreen({super.key});
+
+  // Helper function to update Firebase
+  Future<void> _selectDifficulty(BuildContext context, String level, int skillValue) async {
+    final database = FirebaseDatabase.instance.ref();
+
+    try {
+      // 1. Tell the Pi we are playing against the AI
+      await database.child('settings/game_mode').set('AI');
+
+      // 2. Set the Stockfish skill level (0-20 scale usually used by the engine)
+      await database.child('settings/ai_level').set(skillValue);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Mode: AI vs $level. Board is ready!')),
+        );
+        // Navigate to your game board screen here
+      }
+    } catch (e) {
+      debugPrint("Firebase Error: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +32,6 @@ class DifficultyScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Background soft glow
           Positioned(
             top: -100,
             right: -100,
@@ -24,7 +46,6 @@ class DifficultyScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              // Custom Header
               SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -73,33 +94,37 @@ class DifficultyScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      
-                      const _DifficultyCard(
+
+                      _DifficultyCard(
                         level: 'Beginner',
                         description: 'Casual game, perfect for practice',
                         icon: Icons.child_care_outlined,
                         color: Colors.greenAccent,
+                        onTap: () => _selectDifficulty(context, 'Beginner', 3),
                       ),
                       const SizedBox(height: 20),
-                      const _DifficultyCard(
+                      _DifficultyCard(
                         level: 'Intermediate',
                         description: 'A balanced and smart opponent',
                         icon: Icons.psychology_outlined,
                         color: Colors.blueAccent,
+                        onTap: () => _selectDifficulty(context, 'Intermediate', 8),
                       ),
                       const SizedBox(height: 20),
-                      const _DifficultyCard(
+                      _DifficultyCard(
                         level: 'Advanced',
                         description: 'For players seeking a real challenge',
                         icon: Icons.bolt_outlined,
                         color: Colors.orangeAccent,
+                        onTap: () => _selectDifficulty(context, 'Advanced', 15),
                       ),
                       const SizedBox(height: 20),
-                      const _DifficultyCard(
+                      _DifficultyCard(
                         level: 'Grandmaster',
                         description: 'Maximum precision and strategy',
                         icon: Icons.workspace_premium_outlined,
                         color: Colors.redAccent,
+                        onTap: () => _selectDifficulty(context, 'Grandmaster', 20),
                       ),
                     ],
                   ),
@@ -121,9 +146,7 @@ class DifficultyScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.05),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: Colors.white.withOpacity(0.1),
-          ),
+          border: Border.all(color: Colors.white.withOpacity(0.1)),
         ),
         child: Icon(icon, color: Colors.white, size: 18),
       ),
@@ -136,12 +159,14 @@ class _DifficultyCard extends StatelessWidget {
   final String description;
   final IconData icon;
   final Color color;
+  final VoidCallback onTap;
 
   const _DifficultyCard({
     required this.level,
     required this.description,
     required this.icon,
     required this.color,
+    required this.onTap,
   });
 
   @override
@@ -149,7 +174,7 @@ class _DifficultyCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         borderRadius: BorderRadius.circular(24),
         child: Container(
           padding: const EdgeInsets.all(24),

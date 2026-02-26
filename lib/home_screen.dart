@@ -3,7 +3,7 @@ import 'widgets/custom_app_bar.dart';
 import 'difficulty_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
-
+import 'gameplay_screen.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'splash_screen.dart'; //
-
+import 'package:firebase_database/firebase_database.dart';
 void main() async {
-  // Ensures Flutter framework is ready before calling native code (Firebase)
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initializes Firebase using the configurations in your firebase_options.dart
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform, //
+    options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Add this line to point to your specific Belgium server
+  FirebaseDatabase.instance.databaseURL =
+  "https://chessmate-4e542-default-rtdb.europe-west1.firebasedatabase.app/";
 
   runApp(const ChessMateApp());
 }
