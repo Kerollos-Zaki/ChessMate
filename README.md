@@ -49,10 +49,10 @@
 ---
 
 ## 📸 Gallery
+*  The Core-XY mechanism and frame assembly.
 * <img width="636" height="786" alt="image" src="https://github.com/user-attachments/assets/aa529fed-845d-46aa-9592-9e694df77c45" />
-* - The Core-XY mechanism and frame assembly.
+*  The Flutter mobile app interface.
 * <img width="1157" height="646" alt="image" src="https://github.com/user-attachments/assets/fda41ce4-000a-4a25-a480-454efa3b1990" />
-* - The Flutter mobile app interface.
 
 ---
 
@@ -70,6 +70,6 @@
 
 ---
 *Feel free to star ⭐ this repository if you find this project interesting!*
-<img width="1157" height="646" alt="image" src="https://github.com/user-attachments/assets/fda41ce4-000a-4a25-a480-454efa3b1990" />
+
 
 
