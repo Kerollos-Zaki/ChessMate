@@ -49,7 +49,6 @@
 ---
 
 ## 📸 Gallery
-*(Add photos of your physical build here to show off the mechanics!)*
 * <img width="636" height="786" alt="image" src="https://github.com/user-attachments/assets/aa529fed-845d-46aa-9592-9e694df77c45" /> - The Core-XY mechanism and frame assembly.
 * <img width="1157" height="646" alt="image" src="https://github.com/user-attachments/assets/fda41ce4-000a-4a25-a480-454efa3b1990" /> - The Flutter mobile app interface.
 
