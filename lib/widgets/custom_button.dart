@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../sound_service.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -28,7 +29,10 @@ class CustomButton extends StatelessWidget {
         ] : null,
       ),
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: onPressed != null ? () {
+          SoundService.playButtonSound(context);
+          onPressed!();
+        } : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: isSecondary ? Colors.transparent : Colors.white,
           foregroundColor: isSecondary ? Colors.white : Colors.black,

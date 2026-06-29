@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId = "com.example.chessmate"
         // minSdk 23 is required for modern Bluetooth permissions
-        minSdk = flutter.minSdkVersion
+        minSdk = flutter.minSdkVersion // <--- CHANGE THIS EXACT LINE
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName

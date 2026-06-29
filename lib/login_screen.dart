@@ -89,11 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-      // Check if user already exists in Firestore
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).get();
       
       if (!userDoc.exists) {
-        // Save new user data if they don't exist
         await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
           'uid': userCredential.user!.uid,
           'username': userCredential.user!.displayName ?? 'Google User',
@@ -132,7 +130,6 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Background soft glow
           Positioned(
             top: -150,
             right: -100,
@@ -225,8 +222,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.g_mobiledata, color: Colors.white, size: 32),
-                              const SizedBox(width: 8),
+                              Image.network(
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_\"G\"_logo.svg/120px-Google_\"G\"_logo.svg.png',
+                                height: 24,
+                              ),
+                              const SizedBox(width: 12),
                               const Text(
                                 'Continue with Google',
                                 style: TextStyle(

@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'sound_service.dart';
+import 'gameplay_screen.dart';
 
 class DifficultyScreen extends StatelessWidget {
   const DifficultyScreen({super.key});
 
-  // Helper function to update Firebase
   Future<void> _selectDifficulty(BuildContext context, String level, int skillValue) async {
+    SoundService.playButtonSound(context);
     final database = FirebaseDatabase.instance.ref();
 
     try {
-      // 1. Tell the Pi we are playing against the AI
       await database.child('settings/game_mode').set('AI');
-
-      // 2. Set the Stockfish skill level (0-20 scale usually used by the engine)
       await database.child('settings/ai_level').set(skillValue);
 
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Mode: AI vs $level. Board is ready!')),
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const GameplayScreen()),
         );
-        // Navigate to your game board screen here
       }
     } catch (e) {
       debugPrint("Firebase Error: $e");
@@ -52,6 +51,7 @@ class DifficultyScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       _buildRoundButton(
+                        context: context,
                         icon: Icons.arrow_back_ios_new,
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -137,9 +137,12 @@ class DifficultyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRoundButton({required IconData icon, required VoidCallback onPressed}) {
+  Widget _buildRoundButton({required BuildContext context, required IconData icon, required VoidCallback onPressed}) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: () {
+        SoundService.playButtonSound(context);
+        onPressed();
+      },
       child: Container(
         width: 44,
         height: 44,

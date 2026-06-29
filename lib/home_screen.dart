@@ -4,6 +4,9 @@ import 'difficulty_screen.dart';
 import 'profile_screen.dart';
 import 'settings_screen.dart';
 import 'gameplay_screen.dart';
+import 'sound_service.dart';
+import 'friends_screen.dart'; //
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -47,6 +50,7 @@ class HomeScreen extends StatelessWidget {
                       Row(
                         children: [
                           _buildHeaderButton(
+                            context: context,
                             icon: Icons.settings_outlined,
                             onTap: () => Navigator.push(
                               context,
@@ -55,6 +59,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 12),
                           _buildHeaderButton(
+                            context: context,
                             icon: Icons.person_outline,
                             onTap: () => Navigator.push(
                               context,
@@ -67,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(24.0),
@@ -92,19 +97,29 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      
+
                       _GameModeCard(
                         icon: Icons.wifi,
                         title: 'Board vs Phone',
                         description: 'Connect to your smart board via local Wi-Fi',
-                        onTap: () {},
+                        onTap: () {
+                          SoundService.playButtonSound(context);
+                        },
                       ),
                       const SizedBox(height: 20),
+
+                      // تم التعديل هنا لفتح صفحة الأصدقاء والتحدي أونلاين
                       _GameModeCard(
                         icon: Icons.public,
                         title: 'Online Match',
                         description: 'Play with friends or global players',
-                        onTap: () {},
+                        onTap: () {
+                          SoundService.playButtonSound(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const FriendsScreen()),
+                          );
+                        },
                       ),
                       const SizedBox(height: 20),
                       _GameModeCard(
@@ -112,6 +127,7 @@ class HomeScreen extends StatelessWidget {
                         title: 'Challenge AI',
                         description: 'Test your skills against the machine',
                         onTap: () {
+                          SoundService.playButtonSound(context);
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => const DifficultyScreen()),
@@ -129,9 +145,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderButton({required IconData icon, required VoidCallback onTap}) {
+  Widget _buildHeaderButton({required BuildContext context, required IconData icon, required VoidCallback onTap}) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        SoundService.playButtonSound(context);
+        onTap();
+      },
       child: Container(
         width: 44,
         height: 44,
@@ -164,7 +183,10 @@ class _GameModeCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          SoundService.playButtonSound(context);
+          onTap();
+        },
         borderRadius: BorderRadius.circular(24),
         child: Container(
           padding: const EdgeInsets.all(24),

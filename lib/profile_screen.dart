@@ -3,11 +3,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login_screen.dart';
 import 'avatar_selection_screen.dart';
+import 'sound_service.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<void> _signOut(BuildContext context) async {
+    SoundService.playButtonSound(context);
     await FirebaseAuth.instance.signOut();
     if (context.mounted) {
       Navigator.of(context).pushAndRemoveUntil(
@@ -47,6 +59,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       _buildRoundButton(
+                        context: context,
                         icon: Icons.arrow_back_ios_new,
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -67,10 +80,9 @@ class ProfileScreen extends StatelessWidget {
 
               Expanded(
                 child: StreamBuilder<DocumentSnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(user?.uid)
-                      .snapshots(),
+                  stream: (user != null)
+                      ? FirebaseFirestore.instance.collection('users').doc(user.uid).snapshots()
+                      : const Stream.empty(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator(color: Colors.white));
@@ -100,6 +112,7 @@ class ProfileScreen extends StatelessWidget {
                           // Avatar Section
                           GestureDetector(
                             onTap: () {
+                              SoundService.playButtonSound(context);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => const AvatarSelectionScreen()),
@@ -222,9 +235,12 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRoundButton({required IconData icon, required VoidCallback onPressed}) {
+  Widget _buildRoundButton({required BuildContext context, required IconData icon, required VoidCallback onPressed}) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: () {
+        SoundService.playButtonSound(context);
+        onPressed();
+      },
       child: Container(
         width: 44,
         height: 44,

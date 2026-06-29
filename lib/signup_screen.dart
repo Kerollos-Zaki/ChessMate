@@ -365,8 +365,11 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.g_mobiledata, color: Colors.white, size: 32),
-                              const SizedBox(width: 8),
+                              Image.network(
+                                'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_\"G\"_logo.svg/120px-Google_\"G\"_logo.svg.png',
+                                height: 24,
+                              ),
+                              const SizedBox(width: 12),
                               const Text(
                                 'Sign up with Gmail',
                                 style: TextStyle(

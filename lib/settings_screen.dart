@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'widgets/custom_app_bar.dart';
 import 'connection_board_screen.dart';
+import 'settings_provider.dart';
+import 'sound_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -11,7 +14,11 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _soundEnabled = true;
+  @override
+  void initState() {
+    super.initState();
+    // Removed the notification sound from here
+  }
 
   Future<void> _rateUs() async {
     final Uri url = Uri.parse('https://forms.gle/cKoXE3h6Ur4wvo1aA');
@@ -26,6 +33,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -52,6 +61,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Row(
                     children: [
                       _buildRoundButton(
+                        context: context,
                         icon: Icons.arrow_back_ios_new,
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -81,13 +91,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       const SizedBox(height: 16),
                       _ToggleSettingItem(
                         title: 'Sound Effects',
-                        subtitle: _soundEnabled ? 'Enabled' : 'Disabled',
-                        icon: _soundEnabled ? Icons.volume_up : Icons.volume_off,
-                        value: _soundEnabled,
+                        subtitle: settings.soundEnabled ? 'Enabled' : 'Disabled',
+                        icon: settings.soundEnabled ? Icons.volume_up : Icons.volume_off,
+                        value: settings.soundEnabled,
                         onChanged: (value) {
-                          setState(() {
-                            _soundEnabled = value;
-                          });
+                          settings.setSoundEnabled(value);
                         },
                       ),
                       const SizedBox(height: 32),
@@ -144,9 +152,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildRoundButton({required IconData icon, required VoidCallback onPressed}) {
+  Widget _buildRoundButton({required BuildContext context, required IconData icon, required VoidCallback onPressed}) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: () {
+        SoundService.playButtonSound(context);
+        onPressed();
+      },
       child: Container(
         width: 44,
         height: 44,
@@ -181,7 +192,10 @@ class _ToggleSettingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onChanged(!value),
+      onTap: () {
+        SoundService.playButtonSound(context);
+        onChanged(!value);
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -284,7 +298,10 @@ class _NavigationSettingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        SoundService.playButtonSound(context);
+        onTap();
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
