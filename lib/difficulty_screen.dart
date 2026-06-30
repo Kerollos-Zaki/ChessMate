@@ -6,13 +6,12 @@ import 'gameplay_screen.dart';
 class DifficultyScreen extends StatelessWidget {
   const DifficultyScreen({super.key});
 
-  Future<void> _selectDifficulty(BuildContext context, String level, int skillValue) async {
+  Future<void> _selectDifficulty(BuildContext context, String level, int depth) async {
     SoundService.playButtonSound(context);
     final database = FirebaseDatabase.instance.ref();
 
     try {
-      await database.child('settings/game_mode').set('AI');
-      await database.child('settings/ai_level').set(skillValue);
+      await database.child('settings/ai_level').set(depth);
 
       if (context.mounted) {
         Navigator.push(
@@ -100,7 +99,7 @@ class DifficultyScreen extends StatelessWidget {
                         description: 'Casual game, perfect for practice',
                         icon: Icons.child_care_outlined,
                         color: Colors.greenAccent,
-                        onTap: () => _selectDifficulty(context, 'Beginner', 3),
+                        onTap: () => _selectDifficulty(context, 'Beginner', 5),
                       ),
                       const SizedBox(height: 20),
                       _DifficultyCard(
@@ -108,7 +107,7 @@ class DifficultyScreen extends StatelessWidget {
                         description: 'A balanced and smart opponent',
                         icon: Icons.psychology_outlined,
                         color: Colors.blueAccent,
-                        onTap: () => _selectDifficulty(context, 'Intermediate', 8),
+                        onTap: () => _selectDifficulty(context, 'Intermediate', 10),
                       ),
                       const SizedBox(height: 20),
                       _DifficultyCard(
