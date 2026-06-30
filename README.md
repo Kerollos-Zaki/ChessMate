@@ -18,7 +18,7 @@ The root of this repository contains the complete Flutter application and Fireba
 * **`pubspec.yaml` & `firebase.json`**: App dependencies and Firebase backend configurations.
 
 ### 2. Sensor Management (Raspberry Pi)
-* **`Rassbery pi Codes/`**: This folder contains the scripts executed by the Raspberry Pi. The Raspberry Pi acts as the brain for sensory input, strictly responsible for listening to the 64-coordinate reed switch matrix and processing board state changes.
+* **`Rassbery pi Codes/`**: This folder contains the scripts executed by the Raspberry Pi. The Raspberry Pi acts as the brain for sensory input, strictly responsible for listening to the 64-coordinate reed switch matrix and processing board state changes and stockfish Engine.
 
 ### 3. Movement Execution (Arduino Nano)
 * **`Arduino Code/`**: This folder contains the C/C++ (`.ino`) firmware for the Arduino Nano. The Arduino is strictly responsible for physical execution—driving the motors and mechanical components to physically move the chess pieces across the board based on instructions.
